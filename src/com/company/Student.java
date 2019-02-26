@@ -1,6 +1,5 @@
 package com.company;
 
-import java.util.Comparator;
 
 public class Student implements Comparable<Student> {
     private String firstName;
@@ -11,14 +10,14 @@ public class Student implements Comparable<Student> {
     private int examMark;
     private double finalMark;
 
-    public Student(String firstName, String surname, int id, int courseworkMark1, int courseworkMark2, int examMark) {
+    public Student(int id, String firstName, String surname, int courseworkMark1, int courseworkMark2, int examMark) {
         this.firstName = firstName;
         this.surname = surname;
         this.id = id;
         this.courseworkMark1 = courseworkMark1;
         this.courseworkMark2 = courseworkMark2;
         this.examMark = examMark;
-        this.finalMark = calculateFinalMark(courseworkMark1, courseworkMark2, examMark);
+        this.finalMark = calculateFinalMark(this.courseworkMark1,this.courseworkMark2,this.examMark);
     }
 
     public String getFirstName() {
@@ -78,23 +77,22 @@ public class Student implements Comparable<Student> {
 
     @Override
     public String toString() {
-        this.surname = String.format("%1$-" + 11 + "s", surname);
+        this.surname = String.format("%1$-" + 11 + "s", surname); /* Format the names to have padding of up to 11 spaces
+        on the right */
         this.firstName = String.format("%1$-" + 11 + "s", firstName);
         return String.format(this.firstName + this.surname + this.id + ": " + "%.1f", this.finalMark);
     }
 
-    private static double calculateFinalMark(int cw1, int cw2, int exam){
-        return ((cw1*0.1) + (cw2*0.1) + (exam*0.8));
+    //This method is called whenever one of the mark values is changed to update the final mark
+    private double calculateFinalMark(int cw1, int cw2, int exam){
+        return ((cw1*0.1) + (cw2*0.1) + (exam*0.8)); //CW1 and CW2 are worth 10% of final mark, exam is worth 80%
     }
-
-
 
     @Override
     public int compareTo(Student compareStudent) {
+        // If the value of finalMark is higher than the comparison student return 1, if less return 0, if equal return 0
         if (this.finalMark > compareStudent.getFinalMark()) return 1;
-
         if (this.finalMark < compareStudent.getFinalMark()) return -1;
-
         return 0;
     }
 }
